@@ -3,12 +3,12 @@ defmodule AocElixir.Day3 do
     Documentation for `Day3`.
   """
 
-  def first_part do
+  def first_puzzle do
     read_test_file()
     |> santa_delivery()
   end
 
-  def second_part do
+  def second_puzzle do
     read_test_file()
     |> robot_santa_delivery()
   end

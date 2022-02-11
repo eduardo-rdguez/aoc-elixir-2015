@@ -27,10 +27,10 @@ defmodule Day3Test do
   end
 
   test "Santa is delivering presents to an infinite two-dimensional grid of houses" do
-    assert AocElixir.Day3.first_part() == 2572
+    assert AocElixir.Day3.first_puzzle() == 2572
   end
 
   test "Santa creates a robot version of himself, Robo-Santa, to deliver presents with him" do
-    assert AocElixir.Day3.second_part() == 2631
+    assert AocElixir.Day3.second_puzzle() == 2631
   end
 end
