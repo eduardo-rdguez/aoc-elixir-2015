@@ -20,45 +20,31 @@ defmodule AocElixir.Day3 do
   def santa_delivery(path) do
     path
     |> String.split("", trim: true)
-    |> run_path_santa([{0, 0}])
-    |> count_steps()
+    |> Enum.reduce([{0, 0}], fn step, santa_steps -> run_path_santa(step, santa_steps) end)
+    |> Enum.uniq()
+    |> Enum.count()
   end
 
   def robot_santa_delivery(path) do
     path
     |> String.split("", trim: true)
     |> Enum.chunk_every(2)
-    |> run_path_robot_santa({[{0, 0}], [{0, 0}]})
-    |> count_steps()
-  end
-
-  defp count_steps(steps) do
-    steps
+    |> Enum.reduce([[{0, 0}], [{0, 0}]], fn step, steps -> run_path_robot_santa(step, steps) end)
+    |> List.flatten()
     |> Enum.uniq()
     |> Enum.count()
   end
 
-  defp run_path_santa([], santa_steps), do: santa_steps
-
-  defp run_path_santa([step | tail], santa_steps) do
-    new_santa_step = evaluate_by_steps(santa_steps, step)
-    run_path_santa(tail, santa_steps ++ [new_santa_step])
+  defp run_path_santa(step, santa_steps) do
+    new_santa_step = santa_steps |> List.first() |> evaluate(step)
+    [new_santa_step | santa_steps]
   end
 
-  defp run_path_robot_santa([], {santa_steps, robot_steps}), do: santa_steps ++ robot_steps
+  defp run_path_robot_santa([santa_step, robot_step], [santa_steps, robot_steps]) do
+    new_santa_step = santa_steps |> List.first() |> evaluate(santa_step)
+    new_robot_step = robot_steps |> List.first() |> evaluate(robot_step)
 
-  defp run_path_robot_santa([[santa_step, robot_step] | tail], {santa_steps, robot_steps}) do
-    new_santa_step = evaluate_by_steps(santa_steps, santa_step)
-    new_robot_step = evaluate_by_steps(robot_steps, robot_step)
-
-    steps = {santa_steps ++ [new_santa_step], robot_steps ++ [new_robot_step]}
-    run_path_robot_santa(tail, steps)
-  end
-
-  defp evaluate_by_steps(steps, step) do
-    steps
-    |> List.last()
-    |> evaluate(step)
+    [[new_santa_step | santa_steps], [new_robot_step | robot_steps]]
   end
 
   defp evaluate({x, y}, ">"), do: {x + 1, y}
