@@ -15,13 +15,18 @@ defmodule AocElixir.Day4 do
   def find_hash(secret_key, zeroes) do
     {_hash, counter} =
       0..10_000_000
-      |> Stream.map(&Integer.to_string/1)
-      |> Stream.map(&String.pad_leading(&1, 6, "0"))
-      |> Stream.map(&{secret_key <> &1, &1})
-      |> Stream.map(fn {seed, i} -> {:crypto.hash(:md5, seed), i} end)
-      |> Stream.map(fn {hash, i} -> {Base.encode16(hash), i} end)
+      |> Flow.from_enumerable()
+      |> Flow.map(&Integer.to_string/1)
+      |> Flow.map(&String.pad_leading(&1, 6, "0"))
+      |> Flow.map(&{secret_key <> &1, &1})
+      |> Flow.map(fn {seed, i} -> {md5(seed), i} end)
       |> Enum.find(fn {hash, _} -> String.starts_with?(hash, zeroes) end)
 
     counter
+  end
+
+  defp md5(seed) do
+    :crypto.hash(:md5, seed)
+    |> Base.encode16()
   end
 end
