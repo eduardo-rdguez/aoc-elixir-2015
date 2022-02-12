@@ -17,9 +17,9 @@ defmodule AocElixir.Day4 do
       0..10_000_000
       |> Flow.from_enumerable()
       |> Flow.map(&Integer.to_string/1)
-      |> Flow.map(&String.pad_leading(&1, 6, "0"))
+      |> Flow.map(&String.pad_leading(&1, String.length(zeroes), "0"))
       |> Flow.map(&{secret_key <> &1, &1})
-      |> Flow.map(fn {seed, i} -> {md5(seed), i} end)
+      |> Flow.map(fn {seed, counter} -> {md5(seed), counter} end)
       |> Enum.find(fn {hash, _} -> String.starts_with?(hash, zeroes) end)
 
     counter
