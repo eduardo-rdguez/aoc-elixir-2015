@@ -16,3 +16,4 @@ jobs: # basic units of work in a run
       - run: mix deps.get # get updated dependencies
       - run: mix compile --warnings-as-errors --force # compile source files
       - run: mix test # run all tests in project
+      - run: bash <(curl -s https://codecov.io/bash) # generate a codecov link
