@@ -7,7 +7,14 @@ defmodule AocElixir.MixProject do
       version: "0.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -25,7 +32,8 @@ defmodule AocElixir.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:b58, "~> 1.0.2"},
       {:flow, "~> 1.2.0"},
-      {:ex_doc, "~> 0.28.0", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.28.0", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.14.4"}
     ]
   end
 end
