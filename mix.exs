@@ -13,7 +13,8 @@ defmodule AocElixir.MixProject do
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
-        "coveralls.html": :test
+        "coveralls.html": :test,
+        "coveralls.json": :test
       ]
     ]
   end
@@ -33,7 +34,7 @@ defmodule AocElixir.MixProject do
       {:b58, "~> 1.0.2"},
       {:flow, "~> 1.2.0"},
       {:ex_doc, "~> 0.28.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.14.4"}
+      {:excoveralls, "~> 0.14.4", only: :test}
     ]
   end
 end
