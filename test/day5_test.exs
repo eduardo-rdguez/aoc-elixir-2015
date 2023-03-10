@@ -21,4 +21,24 @@ defmodule Day5Test do
   test "there are 258 nice strings in test file" do
     assert AocElixir.Day5.first_part() == 258
   end
+
+  test "qjhvhtzxzqqjkmpb is nice" do
+    assert AocElixir.Day5.is_nice_string_v2("qjhvhtzxzqqjkmpb") == true
+  end
+
+  test "xxyxx is nice" do
+    assert AocElixir.Day5.is_nice_string_v2("xxyxx") == true
+  end
+
+  test "uurcxstgmygtbstg is naughty" do
+    assert AocElixir.Day5.is_nice_string_v2("uurcxstgmygtbstg") == false
+  end
+
+  test "ieodomkazucvgmuy is naughty" do
+    assert AocElixir.Day5.is_nice_string_v2("ieodomkazucvgmuy") == false
+  end
+
+  test "there are 53 nice strings in test file considering the new rules" do
+    assert AocElixir.Day5.second_part() == 53
+  end
 end
