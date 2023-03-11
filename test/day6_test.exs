@@ -1,9 +1,9 @@
-defmodule Day5Test do
+defmodule Day6Test do
   use ExUnit.Case
   doctest AocElixir
 
   test "turn on 0,0 through 2,2" do
-    matrix = AocElixir.Day6.init_matrix(999)
+    matrix = AocElixir.Day6.init_matrix(2)
     instruction = "turn on 0,0 through 2,2"
     assert AocElixir.Day6.light_handler(matrix, [instruction]) == 9
   end
