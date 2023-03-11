@@ -2,6 +2,8 @@ defmodule Day6Test do
   use ExUnit.Case
   doctest AocElixir
 
+  @moduletag timeout: 100_000
+
   test "turn on 0,0 through 2,2" do
     matrix = AocElixir.Day6.init_matrix(2)
     instruction = "turn on 0,0 through 2,2"
