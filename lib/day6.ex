@@ -4,18 +4,18 @@ defmodule AocElixir.Day6 do
   """
 
   @instruction_regex ~r/(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)/
-  @init_state_lights false
-  @matrix_size 999
+  @default_light_state false
+  @default_matrix_size 999
   @zero 0
 
   def first_part() do
-    init_matrix(@matrix_size)
+    init_matrix(@default_matrix_size)
     |> light_handler(read_instructions(), &switch/2)
     |> Enum.count(& &1)
   end
 
   def second_part() do
-    init_matrix(@matrix_size, @zero)
+    init_matrix(@default_matrix_size, @zero)
     |> light_handler(read_instructions(), &brightness/2)
     |> Enum.sum()
   end
@@ -42,7 +42,9 @@ defmodule AocElixir.Day6 do
 
   defp activate_lights([], matrix, _), do: matrix
 
-  defp activate_lights([{instruction, x1, y1, x2, y2} | tl], matrix, operation) do
+  defp activate_lights([hd | tl], matrix, operation) do
+    {instruction, x1, y1, x2, y2} = hd
+
     matrix =
       for(x <- x1..x2, do: for(y <- y1..y2, do: {x, y, instruction}))
       |> List.flatten()
@@ -53,7 +55,8 @@ defmodule AocElixir.Day6 do
 
   defp update_matrix([], matrix, _), do: matrix
 
-  defp update_matrix([{x, y, instruction} | tl], matrix, operation) do
+  defp update_matrix([hd | tl], matrix, operation) do
+    {x, y, instruction} = hd
     new_matrix = Map.put(matrix, {x, y}, operation.(instruction, matrix[{x, y}]))
     update_matrix(tl, new_matrix, operation)
   end
@@ -67,7 +70,7 @@ defmodule AocElixir.Day6 do
   def brightness("turn off", n), do: n - 1
   def brightness("toggle", n), do: n + 2
 
-  def init_matrix(size, init_state_lights \\ @init_state_lights) do
-    for x <- @zero..size, y <- @zero..size, into: %{}, do: {{x, y}, init_state_lights}
+  def init_matrix(size, lights_state \\ @default_light_state) do
+    for x <- @zero..size, y <- @zero..size, into: %{}, do: {{x, y}, lights_state}
   end
 end
