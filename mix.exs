@@ -34,7 +34,8 @@ defmodule AocElixir.MixProject do
       {:b58, "~> 1.0.3"},
       {:flow, "~> 1.2.3"},
       {:ex_doc, "~> 0.29.2", runtime: false},
-      {:excoveralls, "~> 0.16.0", only: :test}
+      {:excoveralls, "~> 0.16.0", only: :test},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 end
