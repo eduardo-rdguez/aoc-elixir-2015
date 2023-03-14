@@ -8,7 +8,7 @@ defmodule AocElixir.Day4 do
     |> find_hash(zeroes)
   end
 
-  defp read_test_file() do
+  defp read_test_file do
     File.read!("resources/day4.txt")
   end
 

@@ -9,17 +9,17 @@ defmodule AocElixir.Day5 do
   @two_letter_appears_twice ~r/(\w{2})\w*(\1)(?!\2)/
   @letter_between_them ~r/(\w)\w\1\w?/
 
-  def first_part() do
+  def first_part do
     read_test_file()
     |> find_nice_strings()
   end
 
-  def second_part() do
+  def second_part do
     read_test_file()
     |> find_nice_strings_v2()
   end
 
-  defp read_test_file() do
+  defp read_test_file do
     File.read!("resources/day5.txt")
   end
 

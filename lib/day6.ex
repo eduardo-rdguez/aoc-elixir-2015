@@ -8,19 +8,19 @@ defmodule AocElixir.Day6 do
   @default_matrix_size 999
   @zero 0
 
-  def first_part() do
+  def first_part do
     init_matrix(@default_matrix_size)
     |> light_handler(read_instructions(), &switch/2)
     |> Enum.count(& &1)
   end
 
-  def second_part() do
+  def second_part do
     init_matrix(@default_matrix_size, @zero)
     |> light_handler(read_instructions(), &brightness/2)
     |> Enum.sum()
   end
 
-  defp read_instructions() do
+  defp read_instructions do
     File.stream!("resources/day6.txt")
   end
 
