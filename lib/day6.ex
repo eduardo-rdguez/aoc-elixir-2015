@@ -6,10 +6,18 @@ defmodule AocElixir.Day6 do
   @instruction_regex ~r/(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)/
   @init_state_lights false
   @matrix_size 999
+  @zero 0
 
   def first_part() do
     init_matrix(@matrix_size)
-    |> light_handler(read_instructions())
+    |> light_handler(read_instructions(), &switch/2)
+    |> Enum.count(& &1)
+  end
+
+  def second_part() do
+    init_matrix(@matrix_size, @zero)
+    |> light_handler(read_instructions(), &brightness/2)
+    |> Enum.sum()
   end
 
   defp read_instructions() do
@@ -25,37 +33,41 @@ defmodule AocElixir.Day6 do
     {instruction, x1, y1, x2, y2}
   end
 
-  def light_handler(matrix, instructions) do
+  def light_handler(matrix, instructions, operation) do
     instructions
     |> Enum.map(&map_instruction/1)
-    |> activate_lights(matrix)
+    |> activate_lights(matrix, operation)
     |> Map.values()
-    |> Enum.count(& &1)
   end
 
-  defp activate_lights([], matrix), do: matrix
+  defp activate_lights([], matrix, _), do: matrix
 
-  defp activate_lights([{instruction, x1, y1, x2, y2} | tl], matrix) do
+  defp activate_lights([{instruction, x1, y1, x2, y2} | tl], matrix, operation) do
     matrix =
       for(x <- x1..x2, do: for(y <- y1..y2, do: {x, y, instruction}))
       |> List.flatten()
-      |> update_matrix(matrix)
+      |> update_matrix(matrix, operation)
 
-    activate_lights(tl, matrix)
+    activate_lights(tl, matrix, operation)
   end
 
-  defp update_matrix([], matrix), do: matrix
+  defp update_matrix([], matrix, _), do: matrix
 
-  defp update_matrix([{x, y, instruction} | tl], matrix) do
-    new_matrix = Map.put(matrix, {x, y}, switch(instruction, matrix[{x, y}]))
-    update_matrix(tl, new_matrix)
+  defp update_matrix([{x, y, instruction} | tl], matrix, operation) do
+    new_matrix = Map.put(matrix, {x, y}, operation.(instruction, matrix[{x, y}]))
+    update_matrix(tl, new_matrix, operation)
   end
 
-  defp switch("turn on", _), do: true
-  defp switch("turn off", _), do: false
-  defp switch("toggle", state), do: not state
+  def switch("turn on", _), do: true
+  def switch("turn off", _), do: false
+  def switch("toggle", state), do: not state
+
+  def brightness("turn on", n), do: n + 1
+  def brightness("turn off", 0), do: 0
+  def brightness("turn off", n), do: n - 1
+  def brightness("toggle", n), do: n + 2
 
   def init_matrix(size, init_state_lights \\ @init_state_lights) do
-    for x <- 0..size, y <- 0..size, into: %{}, do: {{x, y}, init_state_lights}
+    for x <- @zero..size, y <- @zero..size, into: %{}, do: {{x, y}, init_state_lights}
   end
 end
