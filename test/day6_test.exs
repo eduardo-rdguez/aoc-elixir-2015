@@ -17,28 +17,28 @@ defmodule Day6Test do
     matrix = Day6.init_matrix(999)
     instruction = "turn on 0,0 through 999,999"
     lights_on = Day6.light_handler(matrix, [instruction], &Day6.switch/2) |> Enum.count(& &1)
-    assert lights |> Enum.count(& &1) == 1_000_000
+    assert lights_on == 1_000_000
   end
 
   test "toggle 0,0 through 999,0" do
     matrix = Day6.init_matrix(999)
     instruction = "toggle 0,0 through 999,0"
     lights_on = Day6.light_handler(matrix, [instruction], &Day6.switch/2) |> Enum.count(& &1)
-    assert lights |> Enum.count(& &1) == 1_000
+    assert lights_on == 1_000
   end
 
   test "turn off 499,499 through 500,500" do
     matrix = Day6.init_matrix(999, true)
     instruction = "turn off 499,499 through 500,500"
     lights_on = Day6.light_handler(matrix, [instruction], &Day6.switch/2) |> Enum.count(& &1)
-    assert lights |> Enum.count(& &1) == 999_996
+    assert lights_on == 999_996
   end
 
   test "turn on 489,959 through 759,964" do
     matrix = Day6.init_matrix(999)
     instruction = "turn on 489,959 through 759,964"
     lights_on = Day6.light_handler(matrix, [instruction], &Day6.switch/2) |> Enum.count(& &1)
-    assert lights |> Enum.count(& &1) == 1626
+    assert lights_on == 1626
   end
 
   test "there are 569999 lights on in the file" do
